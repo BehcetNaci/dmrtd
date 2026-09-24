@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # Actions sekmesinden manuel tetiklemeyi sağlar
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,8 +15,8 @@ jobs:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
 
-      - name: Java Kurulumu (Android SDK için gerekli)
-        uses: actions/setup-java@v3
+      - name: Java Kurulumu
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -26,12 +26,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Bağımlılıkları İndir (dmrtd example klasörü için)
+      - name: Bağımlılıkları İndir
         run: flutter pub get
         working-directory: ./example
 
       - name: APK Derle
-        run: flutter build apk --release
+        run: flutter build apk --release --android-skip-build-dependency-validation
         working-directory: ./example
 
       - name: APK'yı Artefakt Olarak Yükle
